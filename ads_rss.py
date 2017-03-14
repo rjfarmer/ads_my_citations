@@ -5,7 +5,10 @@ from feedgen.feed import FeedGenerator
 import urllib
 
 HOME_FOLDER="/home/rob/"
-ORCID="0000-0003-3441-7624"
+
+with open(HOME_FOLDER+".ads/orcid") as f:
+	token=f.readline()
+ORCID=token
 
 RSS_FILE="/var/www/html/ads_rss_feed.xml"
 BASE_URL="http://adsabs.harvard.edu/abs/"
