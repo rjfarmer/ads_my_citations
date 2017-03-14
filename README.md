@@ -37,10 +37,15 @@ sudo python3 ads_rss.py
 
 I would recommend you set up a cron job to re-run daily
 
-Point browser to:
+Point firefox to:
 
 ````bash
 feed:///localhost/ads_rss_feed.xml
+````
+OR chrome, first install a rss feed reader and add:
+
+````bash
+localhost/ads_rss_feed.xml
 ````
 
 Profit!
