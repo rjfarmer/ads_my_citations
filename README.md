@@ -27,7 +27,7 @@ Create file
 
 with your ORCID number.
 
-Edit ads\_rss.py and set your home folder.
+Edit ads\_rss.py and set your home folde, sudo is needed as we add store the feed in /var/www/html
 
 Run with:
 
