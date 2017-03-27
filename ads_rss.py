@@ -29,17 +29,27 @@ for p in papers:
 	if p.citation is not None:
 		all_cites.extend(p.citation)
 
+#Uniquify the list
+all_cites=list(set(all_cites))
+
+#Sort papers bibcodes
 all_cites.sort()
 
-#Only recent ones
-this_year=[i for i in all_cites if i.startswith(CUR_YEAR)]
+#Reverse so most recet first
+all_cites=all_cites[::-1]
 
 #Limit the number
-this_year=this_year[:MAX_NUM]
+sub_cites=all_cites[:MAX_NUM]
 
-#Get the each paper that cited my paper
-papers=[list(ads.SearchQuery(bibcode=bibcode,fl=['title','bibcode','pubdate']))[0] for bibcode in this_year]
+papers=[]
+#Get each paper that cited one of my papers
+for bibcode in sub_cites:
+	x=list(ads.SearchQuery(bibcode=bibcode,fl=['title','bibcode','pubdate']))
+	#Some arixvs dont seem to return properly
+	if len(x)>0:
+		papers.append(x[0])
 
+#Extract info
 allp=[]
 for p in papers:
 	allp.append({'title':p.title,'bibcode':p.bibcode,'pub':p.pubdate})
@@ -55,7 +65,7 @@ fg.link(href=BASE_URL,rel='self')
 fg.title('ADS citation feed')
 fg.author( {'name':'abc','email':'abc@fake.com'} )
 fg.logo('')
-fg.subtitle('RSS feed of ads citations')
+fg.subtitle('RSS feed of my ads citations')
 fg.language('en')
 
 for i in allp:
