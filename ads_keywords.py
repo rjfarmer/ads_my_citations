@@ -8,11 +8,11 @@ HOME_FOLDER="/home/rob/"
 
 with open(HOME_FOLDER+".ads/orcid") as f:
 	token=f.readline()
+
 ORCID=token
 
-RSS_FILE="/var/www/html/ads_rss_feed.xml"
+RSS_FILE="/var/www/html/ads_keywords.xml"
 BASE_URL="http://adsabs.harvard.edu/abs/"
-CUR_YEAR='2017'
 MAX_NUM=100
 
 with open(HOME_FOLDER+".ads/dev_key") as f:
@@ -20,34 +20,11 @@ with open(HOME_FOLDER+".ads/dev_key") as f:
 
 ads.config.token=token.strip()
 
-#Get my papers
-papers=ads.SearchQuery(orcid_user=ORCID,fl=['citation'])
-
-#get the bibcodes for citations to my papers
-all_cites=[]
-for p in papers:
-	if p.citation is not None:
-		all_cites.extend(p.citation)
-
-#Uniquify the list
-all_cites=list(set(all_cites))
-
-#Sort papers bibcodes
-all_cites.sort()
-
-#Reverse so most recet first
-all_cites=all_cites[::-1]
-
-#Limit the number
-sub_cites=all_cites[:MAX_NUM]
-
-papers=[]
-#Get each paper that cited one of my papers
-for bibcode in sub_cites:
-	x=list(ads.SearchQuery(bibcode=bibcode,fl=['title','bibcode','pubdate']))
-	#Some arixvs dont seem to return properly
-	if len(x)>0:
-		papers.append(x[0])
+#Get papers
+papers=ads.SearchQuery(q="supernovae OR (massive AND stars) OR nucleosynthesis",
+						fl=['title','pubdate','bibcode'],
+						rows=100,
+						sort='pubdate')
 
 #Extract info
 allp=[]
@@ -65,7 +42,7 @@ fg.link(href=BASE_URL,rel='self')
 fg.title('ADS citation feed')
 fg.author( {'name':'abc','email':'abc@fake.com'} )
 fg.logo('')
-fg.subtitle('RSS feed of my ads citations')
+fg.subtitle('RSS feed of my ads keywords')
 fg.language('en')
 
 for i in allp:

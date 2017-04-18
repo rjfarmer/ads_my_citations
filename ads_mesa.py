@@ -50,7 +50,7 @@ for bibcode in sub_cites:
 #Extract info
 allp=[]
 for p in papers:
-	allp.append({'title':p.title,'bibcode':p.bibcode,'pub':p.pubdate})
+	allp.append({'title':p.title[0],'bibcode':p.bibcode,'pub':p.pubdate})
 
 #Most recent first
 allp=sorted(allp,key=lambda k:k['pub'], reverse=True)
@@ -70,7 +70,7 @@ for i in allp:
 	fe=fg.add_entry()
 	fe.id(BASE_URL+i['bibcode'])
 	fe.link(href=BASE_URL+i['bibcode'])
-	fe.title(i['title'][0])
+	fe.title(i['title'])
 
 rssfeed  = fg.rss_str(pretty=True)
 fg.rss_file(RSS_FILE)
