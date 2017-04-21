@@ -15,18 +15,20 @@ BASE_URL="http://adsabs.harvard.edu/abs/"
 CUR_YEAR='2017'
 MAX_NUM=100
 
+SKIP_BIBS=["2011ApJS..192....3P","2013ApJS..208....4P","2015ApJS..220...15P","2014ExA....38..249R"]
+
 with open(HOME_FOLDER+".ads/dev_key") as f:
 	token=f.readline()
 
 ads.config.token=token.strip()
 
 #Get my papers
-papers=ads.SearchQuery(orcid_user=ORCID,fl=['citation'])
+papers=ads.SearchQuery(orcid_user=ORCID,fl=['bibcode','citation'])
 
 #get the bibcodes for citations to my papers
 all_cites=[]
 for p in papers:
-	if p.citation is not None:
+	if p.citation is not None and p.bibcode not in SKIP_BIBS:
 		all_cites.extend(p.citation)
 
 #Uniquify the list
