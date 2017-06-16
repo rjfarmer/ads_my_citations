@@ -8,7 +8,8 @@ HOME_FOLDER="/home/rob/"
 
 with open(HOME_FOLDER+".ads/orcid") as f:
 	token=f.readline()
-ORCID=token
+
+ORCID=token.strip()
 
 RSS_FILE="/var/www/html/ads_rss_feed.xml"
 BASE_URL="http://adsabs.harvard.edu/abs/"
@@ -23,7 +24,7 @@ with open(HOME_FOLDER+".ads/dev_key") as f:
 ads.config.token=token.strip()
 
 #Get my papers
-papers=ads.SearchQuery(orcid_user=ORCID,fl=['bibcode','citation'])
+papers=ads.SearchQuery(q='orcid:'+ORCID,fl=['bibcode','citation'])
 
 #get the bibcodes for citations to my papers
 all_cites=[]

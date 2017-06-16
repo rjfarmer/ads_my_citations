@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import ads as ads
+import os
 from feedgen.feed import FeedGenerator
 import urllib
 
@@ -15,7 +16,7 @@ RSS_FILE="/var/www/html/ads_authors.xml"
 BASE_URL="http://adsabs.harvard.edu/abs/"
 MAX_NUM=100
 
-with open(HOME_FOLDER+".ads/dev_key") as f:
+with open(os.path.join(HOME_FOLDER,".ads/dev_key")) as f:
 	token=f.readline()
 
 ads.config.token=token.strip()
