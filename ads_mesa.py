@@ -2,17 +2,23 @@
 
 import ads as ads
 from feedgen.feed import FeedGenerator
+from time import sleep
 
-DEV_KEY_FILE="/home/rob/.ads/dev_key"
+HOME_FOLDER="/home/rob/"
 
-RSS_FILE="ads_mesa_feed.xml"
-BASE_URL="http://adsabs.harvard.edu/abs/"
+with open(HOME_FOLDER+".ads/orcid") as f:
+	token=f.readline()
+
+ORCID=token.strip()
+
+RSS_FILE="/var/www/html/ads_mesa_feed.xml"
+BASE_URL="https://ui.adsabs.harvard.edu/#abs/"
 MAX_NUM=100
 
 MESA_BIBS=["2011ApJS..192....3P","2013ApJS..208....4P","2015ApJS..220...15P"]
 
 
-with open(DEV_KEY_FILE) as f:
+with open(HOME_FOLDER+".ads/dev_key") as f:
 	token=f.readline()
 
 ads.config.token=token.strip()
@@ -42,10 +48,14 @@ sub_cites=all_cites[:MAX_NUM]
 papers=[]
 #Get each paper that cited a MESA paper
 for bibcode in sub_cites:
-	x=list(ads.SearchQuery(bibcode=bibcode,fl=['title','bibcode','pubdate']))
-	#Some arixvs dont seem to return properly
-	if len(x)>0:
-		papers.append(x[0])
+	try:
+		x=list(ads.SearchQuery(bibcode=bibcode,fl=['title','bibcode','pubdate']))
+		#Some arixvs dont seem to return properly
+		if len(x)>0:
+			papers.append(x[0])
+		sleep(0.01)
+	except:
+		pass
 
 #Extract info
 allp=[]
@@ -53,7 +63,7 @@ for p in papers:
 	allp.append({'title':p.title[0],'bibcode':p.bibcode,'pub':p.pubdate})
 
 #Most recent first
-allp=sorted(allp,key=lambda k:k['pub'], reverse=True)
+allp=sorted(allp,key=lambda k:k['pub'], reverse=False)
 
 #Make RSS feed
 fg = FeedGenerator()

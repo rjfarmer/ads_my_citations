@@ -3,6 +3,7 @@
 import ads as ads
 from feedgen.feed import FeedGenerator
 import urllib
+from time import sleep
 
 HOME_FOLDER="/home/rob/"
 
@@ -12,7 +13,7 @@ with open(HOME_FOLDER+".ads/orcid") as f:
 ORCID=token
 
 RSS_FILE="/var/www/html/ads_keywords.xml"
-BASE_URL="http://adsabs.harvard.edu/abs/"
+BASE_URL="https://ui.adsabs.harvard.edu/#abs/"
 MAX_NUM=100
 
 with open(HOME_FOLDER+".ads/dev_key") as f:
@@ -30,9 +31,10 @@ papers=ads.SearchQuery(q="supernovae OR (massive AND stars) OR nucleosynthesis",
 allp=[]
 for p in papers:
 	allp.append({'title':p.title[0],'bibcode':p.bibcode,'pub':p.pubdate})
+	sleep(0.01)
 
 #Most recent first
-allp=sorted(allp,key=lambda k:k['pub'], reverse=True)
+allp=sorted(allp,key=lambda k:k['pub'], reverse=False)
 
 #Make RSS feed
 fg = FeedGenerator()
