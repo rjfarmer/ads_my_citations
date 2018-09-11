@@ -15,7 +15,7 @@ RSS_FILE="/var/www/html/ads_mesa_feed.xml"
 BASE_URL="https://ui.adsabs.harvard.edu/#abs/"
 MAX_NUM=100
 
-MESA_BIBS=["2011ApJS..192....3P","2013ApJS..208....4P","2015ApJS..220...15P"]
+MESA_BIBS=["2011ApJS..192....3P","2013ApJS..208....4P","2015ApJS..220...15P","2018ApJS..234...34P"]
 
 
 with open(HOME_FOLDER+".ads/dev_key") as f:
